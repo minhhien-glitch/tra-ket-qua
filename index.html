@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101f3c" />
+    <title>Cổng tra cứu kết quả học tập</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap");
+      :root {
+        --navy: #122443;
+        --blue: #244d82;
+        --sky: #dcecff;
+        --cream: #fffaf0;
+        --pink: #ff8eaa;
+        --yellow: #ffd76a;
+        --ink: #202b40;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: #f2f5fa;
+        min-height: 100vh;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      .screen {
+        display: none;
+        min-height: 100vh;
+      }
+      .screen.active {
+        display: flex;
+      }
+      /* Chi hien thi trang chuc mung sau khi dang nhap thanh cong */
+      #celebrate {
+        display: none;
+      }
+      #celebrate.active {
+        display: block;
+      }
+      body.locked {
+        height: 100vh;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      #login {
+        height: 100vh;
+        height: 100svh;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      #loading {
+        height: 100vh;
+        height: 100svh;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow: hidden;
+      }
+      #login {
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        position: relative;
+        isolation: isolate;
+        background:
+          linear-gradient(115deg, rgba(8, 25, 52, 0.7), rgba(15, 39, 72, 0.36)),
+          url("https://quanly.hpu2.edu.vn/center_data/hpu2.edu.vn/ps_cms_articles/image/co-so-vat-chat/NhaA1.HPU2.jpg")
+            center/cover no-repeat fixed;
+        background-color: #233b5c;
+      }
+      .login-wrap {
+        width: min(100%, 470px);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 22px 4px;
+        color: #fff;
+        text-shadow: 0 2px 12px #0008;
+      }
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        background: var(--navy);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        box-shadow: 0 8px 20px #12244330;
+      }
+      .brand strong {
+        display: block;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+      }
+      .brand small {
+        color: #e5edf8;
+        font-size: 11px;
+      }
+      .login-card {
+        background: #fff;
+        border: 1px solid #e6ebf3;
+        border-radius: 22px;
+        padding: 34px;
+        box-shadow: 0 22px 65px #18365a16;
+      }
+      .kicker {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.3px;
+        color: #4771a5;
+        text-transform: uppercase;
+      }
+      h1 {
+        font-size: 25px;
+        line-height: 1.3;
+        color: var(--navy);
+        margin: 10px 0 8px;
+      }
+      .sub {
+        font-size: 13px;
+        line-height: 1.7;
+        color: #738097;
+        margin: 0 0 26px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin: 0 0 8px;
+        color: #35445b;
+      }
+      input {
+        width: 100%;
+        border: 1px solid #d9e1ed;
+        border-radius: 11px;
+        padding: 14px 15px;
+        outline: none;
+        color: var(--navy);
+        background: #fbfcfe;
+        letter-spacing: 0.5px;
+      }
+      input:focus {
+        border-color: #4779b6;
+        box-shadow: 0 0 0 3px #4779b61c;
+      }
+      .primary {
+        width: 100%;
+        border: 0;
+        border-radius: 11px;
+        padding: 14px 18px;
+        background: var(--navy);
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: 0.2s;
+      }
+      .primary:hover {
+        background: #244d82;
+        transform: translateY(-1px);
+      }
+      .hint {
+        font-size: 11px;
+        color: #8792a4;
+        margin-top: 17px;
+        line-height: 1.6;
+      }
+      .error {
+        display: none;
+        color: #c43f5b;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+      .portal-foot {
+        display: flex;
+        justify-content: space-between;
+        color: #f0f4fa;
+        font-size: 10px;
+        margin: 16px 5px;
+        text-shadow: 0 1px 8px #0009;
+      }
+      #loading {
+        align-items: center;
+        justify-content: center;
+        background: var(--navy);
+        color: #fff;
+        text-align: center;
+        padding: 24px;
+      }
+      .loader-box {
+        width: min(100%, 420px);
+      }
+      .spinner {
+        width: 54px;
+        height: 54px;
+        border: 3px solid #ffffff30;
+        border-top-color: var(--yellow);
+        border-radius: 50%;
+        margin: 0 auto 25px;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-title {
+        font-size: 22px;
+        font-weight: 800;
+      }
+      .loading-sub {
+        font-size: 12px;
+        color: #b9c8df;
+        margin-top: 9px;
+      }
+      .progress {
+        height: 4px;
+        background: #ffffff25;
+        border-radius: 5px;
+        margin: 27px 0 10px;
+        overflow: hidden;
+      }
+      .progress i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--yellow);
+        animation: progress 2.4s ease forwards;
+      }
+      @keyframes progress {
+        to {
+          width: 100%;
+        }
+      }
+      #celebrate {
+        display: block;
+        background: #454097e3;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #celebrate .section-head h3 {
+        color: #ffffff;
+      }
+
+      #celebrate .section-head p {
+        color: #e1ecff;
+      }
+
+      #celebrate .section-head .eyebrow {
+        color: #ffd76a;
+      }
+
+      .hero {
+        position: relative;
+        background: var(--navy);
+        color: white;
+        padding: 50px 22px 70px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .hero:before,
+      .hero:after {
+        content: "✦";
+        position: absolute;
+        color: #ffd76a66;
+        font-size: 100px;
+      }
+      .hero:before {
+        left: 7%;
+        top: 5px;
+      }
+      .hero:after {
+        right: 8%;
+        bottom: -25px;
+      }
+      .hero-tag {
+        display: inline-block;
+        border: 1px solid #ffffff45;
+        border-radius: 99px;
+        padding: 7px 13px;
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        font-weight: 700;
+        color: #dbe8fa;
+      }
+      .hero h2 {
+        font-size: clamp(30px, 6vw, 48px);
+        line-height: 1.16;
+        margin: 18px auto 10px;
+        max-width: 760px;
+      }
+      .hero h2 span {
+        color: var(--yellow);
+      }
+      .hero p {
+        color: #d2deee;
+        font-size: 13px;
+        line-height: 1.7;
+        margin: 0 auto;
+        max-width: 560px;
+      }
+      .content {
+        width: min(1240px, calc(100% - 36px));
+        margin: -28px auto 0;
+        position: relative;
+      }
+      .welcome {
+        background: white;
+        border-radius: 20px;
+        padding: 22px 25px;
+        box-shadow: 0 12px 35px #263b5b12;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+      .welcome small {
+        color: #8792a4;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .welcome h3 {
+        margin: 5px 0 0;
+        color: var(--navy);
+        font-size: 22px;
+      }
+      .welcome .stamp {
+        font-family: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+        font-size: 21px;
+        color: #e66e8c;
+        transform: rotate(-7deg);
+        border: 2px dashed #f4a4b7;
+        padding: 8px 13px;
+        border-radius: 9px;
+      }
+      .section-head {
+        text-align: center;
+        margin: 48px 0 22px;
+      }
+      .section-head .eyebrow {
+        color: #e47793;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+      }
+      .section-head h3 {
+        font-size: 25px;
+        color: var(--navy);
+        margin: 7px 0;
+      }
+      .section-head p {
+        font-size: 12px;
+        color: #8290a2;
+        margin: 0;
+      }
+      /* Một chân dung và một lời giới thiệu */
+      .photo-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 24px;
+        max-width: 950px;
+        margin: 0 auto;
+        align-items: stretch;
+      }
+      .profile-photo {
+        margin: 0;
+        padding: 12px 12px 18px;
+        background: #fff;
+        border: 1px solid #f5e6df;
+        border-radius: 18px;
+        box-shadow: 0 12px 30px #172a4620;
+      }
+      .profile-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+        border-radius: 12px;
+        background: #e9eef5;
+      }
+      .profile-photo figcaption {
+        text-align: center;
+        padding-top: 12px;
+        color: #8d6680;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .profile-info {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+
+        padding: 20px 25px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .profile-info h3 {
+        font-size: clamp(26px, 3vw, 38px);
+        color: #ffe29a;
+        margin: 0;
+        font-weight: 800;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      .profile-info p {
+        font-size: clamp(18px, 2vw, 25px);
+        color: #ffffff;
+        font-weight: 600;
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      .profile-info .heart-icon {
+        font-size: 44px;
+      }
+
+      .profile-info h3 {
+        font-size: clamp(26px, 3vw, 38px);
+        color: #ffe29a;
+        margin: 0;
+        font-weight: 800;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      .profile-info p {
+        font-size: clamp(18px, 2vw, 25px);
+        color: #ffffff;
+        font-weight: 600;
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      .profile-info small {
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.3px;
+      }
+      /* Lời chúc chữ kèm người gửi */
+      .wish-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        align-items: stretch;
+      }
+      .wish-card {
+        min-height: 185px;
+        padding: 24px 22px;
+        background: #fff;
+        border: 2px solid #fff;
+        border-radius: 20px;
+        box-shadow: 0 9px 24px #63385b18;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .wish-card:nth-child(3n + 1) {
+        background: #fff1f3;
+      }
+      .wish-card:nth-child(3n + 2) {
+        background: #fff8df;
+      }
+      .wish-card:nth-child(3n) {
+        background: #edf5ff;
+      }
+      .wish-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 28px #63385b25;
+      }
+      .wish-card .quote-mark {
+        font-size: 34px;
+        color: #d974a1;
+        line-height: 0.75;
+        font-family: Georgia, serif;
+      }
+      .wish-card .wish-text {
+        margin: 0;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+        color: #4c4356;
+        font-size: 14px;
+        line-height: 1.85;
+        flex: 1;
+      }
+      .wish-card .wish-author {
+        font-weight: 800;
+        color: #a34c78;
+        font-size: 13px;
+        text-align: right;
+      }
+      .closing {
+        margin: 55px 0 0;
+        background: #f6dfe5;
+        padding: 38px 20px;
+        text-align: center;
+        position: relative;
+      }
+      .closing .heart {
+        font-size: 26px;
+      }
+      .closing h3 {
+        font-family: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+        font-size: 31px;
+        color: #a94e69;
+        margin: 8px 0;
+      }
+      .closing p {
+        font-size: 12px;
+        color: #875d6a;
+        line-height: 1.7;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+      .footer {
+        background: var(--navy);
+        color: #c5d1e2;
+        text-align: center;
+        padding: 22px 15px;
+        font-size: 10px;
+        letter-spacing: 0.4px;
+      }
+      .footer strong {
+        color: var(--yellow);
+      }
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 24px 0 44px;
+        flex-wrap: wrap;
+      }
+      .secondary {
+        border: 1px solid #d8dfeb;
+        background: white;
+        color: var(--navy);
+        padding: 11px 16px;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* PARTY MODE: bóng bay, confetti và hộp quà */
+      .hero {
+        background: linear-gradient(
+          125deg,
+          #172b52 0%,
+          #3c397d 48%,
+          #a13f76 100%
+        );
+      }
+      .hero:before,
+      .hero:after {
+        z-index: 0;
+        color: #ffe27a88;
+        animation: none;
+        font-size: 100px;
+        top: 200px;
+      }
+      .hero:before {
+        left: 30%;
+        top: 10px;
+        font-size: 40px;
+      }
+
+      .hero > * {
+        position: relative;
+        z-index: 2;
+      }
+      .party-decor {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+      .balloon {
+        position: absolute;
+        top: 18px;
+        bottom: auto;
+        width: 48px;
+        height: 62px;
+        border-radius: 50% 50% 46% 46%;
+        opacity: 0.88;
+        animation: none;
+      }
+      /* Bóng bay từ dưới màn hình lên vị trí trang trí ban đầu */
+      #celebrate.active .balloon {
+        animation: balloonArrive 2.8s cubic-bezier(0.18, 0.76, 0.27, 1) both;
+      }
+      #celebrate.active .balloon.b2 {
+        animation-delay: 0.2s;
+      }
+      #celebrate.active .balloon.b3 {
+        animation-delay: 0.4s;
+      }
+      #celebrate.active .balloon.b4 {
+        animation-delay: 0.12s;
+      }
+      @keyframes balloonArrive {
+        0% {
+          transform: translateY(110vh) rotate(-12deg);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.88;
+        }
+        75% {
+          transform: translateY(-14px) rotate(6deg);
+          opacity: 0.95;
+        }
+        100% {
+          transform: translateY(0) rotate(0);
+          opacity: 0.88;
+        }
+      }
+      .balloon:before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        bottom: -26px;
+        width: 1px;
+        height: 28px;
+        background: #ffffff9c;
+      }
+      .balloon:after {
+        content: "";
+        position: absolute;
+        left: 18px;
+        bottom: -5px;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 9px solid currentColor;
+      }
+      .balloon.b1 {
+        left: 7%;
+        background: #ff7298;
+        color: #ff7298;
+      }
+      .balloon.b2 {
+        left: 22%;
+        top: 42px;
+        background: #ffd45c;
+        color: #ffd45c;
+        width: 40px;
+        height: 53px;
+      }
+      .balloon.b3 {
+        right: 8%;
+        background: #72d7c1;
+        color: #72d7c1;
+      }
+      .balloon.b4 {
+        right: 23%;
+        top: 42px;
+        background: #a88bff;
+        color: #a88bff;
+        width: 42px;
+        height: 56px;
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(-8deg);
+        }
+        50% {
+          transform: translateY(-55vh) rotate(8deg);
+        }
+        100% {
+          transform: translateY(-115vh) rotate(-8deg);
+        }
+      }
+      @keyframes twinkle {
+        from {
+          transform: scale(0.92) rotate(-5deg);
+          opacity: 0.5;
+        }
+        to {
+          transform: scale(1.08) rotate(5deg);
+          opacity: 1;
+        }
+      }
+      .confetti-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 99;
+        overflow: hidden;
+      }
+      .confetti {
+        position: absolute;
+        top: -18px;
+        width: 9px;
+        height: 15px;
+        opacity: 0.95;
+        animation: confettiFall var(--dur) linear forwards;
+        transform: rotate(var(--rot));
+        border-radius: 2px;
+      }
+      @keyframes confettiFall {
+        to {
+          transform: translate3d(var(--drift), 110vh, 0) rotate(900deg);
+          opacity: 0.85;
+        }
+      }
+      .gift-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff0b9;
+        color: #80521c;
+        border: 1px solid #ffdf75;
+        border-radius: 999px;
+        padding: 9px 15px;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 8px 22px #25153a25;
+        margin-top: 18px;
+        animation: none;
+        transform: none;
+      }
+      @keyframes bop {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-2deg);
+        }
+        50% {
+          transform: translateY(-5px) rotate(2deg);
+        }
+      }
+      .section-head h3 {
+        color: #312b68;
+      }
+      @media (max-width: 760px) {
+        .photo-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+        .profile-photo {
+          width: min(100%, 360px);
+          justify-self: center;
+        }
+        .profile-info {
+          min-height: 220px;
+          padding: 28px 18px;
+        }
+        .wish-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .welcome {
+          padding: 18px;
+        }
+        .welcome h3 {
+          font-size: 18px;
+        }
+        .hero {
+          padding: 42px 20px 62px;
+        }
+        .login-card {
+          padding: 27px 23px;
+        }
+      }
+      @media (max-width: 520px) {
+        .wish-grid {
+          grid-template-columns: 1fr;
+        }
+        .wish-card {
+          min-height: 150px;
+        }
+        .welcome .stamp {
+          font-size: 13px;
+          padding: 6px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section id="login" class="screen active">
+      <div class="login-wrap">
+        <div class="brand">
+          <div class="brand-mark">⌂</div>
+          <div>
+            <strong>HỆ THỐNG THÔNG TIN SINH VIÊN</strong
+            ><small>STUDENT INFORMATION PORTAL</small>
+          </div>
+        </div>
+        <div class="login-card">
+          <div class="kicker">Cổng tra cứu trực tuyến</div>
+          <h1>Tra cứu kết quả học tập</h1>
+          <p class="sub">
+            Vui lòng nhập mã sinh viên để truy cập thông tin học tập cá nhân của
+            bạn.
+          </p>
+          <form id="loginForm">
+            <label for="msv">MÃ SINH VIÊN (MSV)</label>
+            <input
+              id="msv"
+              autocomplete="off"
+              placeholder="Ví dụ: 257480201001"
+              maxlength="24"
+              required
+            />
+            <div class="error" id="error">
+              Mã sinh viên không hợp lệ. Vui lòng kiểm tra và thử lại.
+            </div>
+            <button class="primary" type="submit">
+              TRA CỨU KẾT QUẢ&nbsp; →
+            </button>
+          </form>
+          <div class="hint">
+            Lưu ý: Nhập mã sinh viên được cấp để hệ thống xác thực thông tin.
+          </div>
+        </div>
+        <div class="portal-foot">
+          <span>© 2026 STUDENT PORTAL</span
+          ><span>Hỗ trợ kỹ thuật · Bảo mật thông tin</span>
+        </div>
+      </div>
+    </section>
+    <section id="loading" class="screen">
+      <div class="loader-box">
+        <div class="spinner"></div>
+        <div class="loading-title">Đang trích xuất dữ liệu...</div>
+        <div class="loading-sub" id="loadingText">
+          Đang xác thực mã sinh viên
+        </div>
+        <div class="progress"><i></i></div>
+        <div style="font-size: 10px; color: #91a4c0">
+          PLEASE WAIT · DO NOT CLOSE THIS WINDOW
+        </div>
+      </div>
+    </section>
+    <section id="celebrate" class="screen">
+      <header class="hero">
+        <div class="party-decor" aria-hidden="true">
+          <span class="balloon b1"></span><span class="balloon b2"></span
+          ><span class="balloon b3"></span><span class="balloon b4"></span>
+        </div>
+        <div class="hero-tag">19.11 · INTERNATIONAL MEN'S DAY</div>
+        <h2>Hôm nay, spotlight<br />thuộc về <span>cậu!</span></h2>
+        <p>
+          Một chút bất ngờ, thật nhiều kỷ niệm và những lời nhắn được gửi riêng
+          đến cậu.
+        </p>
+        <div class="gift-badge">🎁 YOU ARE THE MAIN CHARACTER TODAY ✨</div>
+      </header>
+      <main class="content">
+        <div class="welcome">
+          <div>
+            <small>Hồ sơ đặc biệt đã được mở khóa</small>
+            <h3 id="personName">Dành riêng cho bạn ✨</h3>
+          </div>
+          <div class="stamp">special edition!</div>
+        </div>
+        <div class="section-head">
+          <div class="eyebrow">OUR LITTLE TIME CAPSULE</div>
+          <h3>Trong mắt chúng tớ, cậu là... 💗</h3>
+          <p>
+            Mỗi người một nét riêng, nhưng đều là mảnh ghép đáng yêu của lớp!
+          </p>
+        </div>
+        <div class="photo-grid" id="photoGrid"></div>
+        <div class="section-head">
+          <div class="eyebrow">A LITTLE NOTE FOR YOU</div>
+          <h3>Những lời nhắn gửi thương 💌</h3>
+          <p>
+            Mỗi lời chúc đều có tên người gửi, dành tặng các chàng trai của lớp.
+          </p>
+        </div>
+        <div class="wish-grid" id="wishGrid"></div>
+        <div class="actions">
+          <button
+            class="secondary"
+            onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+          >
+            ↑ Lên đầu trang</button
+          ><button class="secondary" onclick="logout()">
+            ↩ Quay lại trang tra cứu
+          </button>
+        </div>
+      </main>
+      <section class="closing">
+        <div class="heart">💗 ✦ 💗</div>
+        <h3>Chúc cậu luôn rực rỡ theo cách của riêng mình!</h3>
+        <p>
+          Cảm ơn vì đã là một phần của những ngày tháng thanh xuân thật vui.
+          Chúc các bạn nam luôn mạnh khỏe, tự tin, gặp nhiều may mắn và có thật
+          nhiều điều tuyệt vời đang chờ phía trước.
+        </p>
+      </section>
+      <footer class="footer">
+        MADE WITH <strong>♥</strong> BY THE GIRLS · HAPPY INTERNATIONAL MEN'S
+        DAY 19/11
+      </footer>
+    </section>
+    <script>
+      // CHỈNH Ở ĐÂY: giữ nguyên MSV, điền tên, câu giới thiệu và 1 ảnh mỗi bạn.
+      // Đặt 8 ảnh tại assets/photos/ (đổi đuôi .jpg nếu ảnh là .png/.webp).
+
+      const students = {
+        257480201009: {
+          name: "Phan Việt Anh",
+          description: "Cây hài chính hiệu của lớp ✨",
+          photo: "assets/photos/257480201009.jpg",
+        },
+
+        257480201021: {
+          name: "Chu Tiến Dũng",
+          description: "Visual không thể xem thường 💙",
+          photo: "assets/photos/257480201021.jpg",
+        },
+
+        257480201024: {
+          name: "Lê Việt Dũng",
+          description: "Anh chàng trai siêu dễ thương của lớp ☀️",
+          photo: "assets/photos/257480201024.jpg",
+        },
+
+        257480201028: {
+          name: "Vũ Anh Dương",
+          description: "Chiến thần học tập, coder chính hiệu ✨",
+          photo: "assets/photos/257480201028.jpg",
+        },
+
+        257480201045: {
+          name: "Nguyễn Xuân Huy",
+          description: "Chàng trai bí ẩn với những tài năng không phải ai cũng biết! 🤫",
+          photo: "assets/photos/257480201045.jpg",
+        },
+
+        257480201051: {
+          name: "Hoàng Duy Khánh",
+          description: "Chàng trai thân thiện, đi đến đâu cũng mang theo năng lượng tích cực ✨",
+          photo: "assets/photos/257480201051.jpg",
+        },
+
+        257480201054: {
+          name: "Phạm Thành Khoa",
+          description: "Chàng trai đầy nhiệt huyết của lớp ✨",
+          photo: "assets/photos/257480201054.jpg",
+        },
+
+        257480201077: {
+          name: "Dương Tuệ Minh",
+          description: "Chàng trai luôn hết mình vì lớp 🔥",
+          photo: "assets/photos/257480201077.jpg",
+        },
+      };
+
+      // LỜI CHÚC DÙNG CHUNG CHO TẤT CẢ BẠN NAM.
+      // Thay tên và nội dung mẫu bằng lời chúc thật của các bạn nữ.
+      // Có thể thêm/bớt các mục { name: "...", message: "..." }.
+
+      const wishes = [
+        {
+          name: "Hoàng Lê Cẩm Anh",
+          message: "Chúc các bạn nam K51A CNTT 19/11 luôn vui vẻ, học tập tốt để qua môn nha và sớm tìm được nửa kia chứ mùa đông gòi😋.",
+        },
+        {
+          name: "Đỗ Kim Chi",
+          message: "Chúc các bạn luôn có thật nhiều tiền.",
+        },
+        {
+          name: "Phí Thị Minh Hiền",
+          message: "Chúc các chàng trai K51A CNTT ngày 19/11 thật vui, luôn đẹp trai, học giỏi và mãi là những chàng trai đáng yêu của lớp nhé!💗",
+        },
+        {
+          name: "Đỗ Hồng Hoa",
+          message: "Hôm nay là 19/11, chúc các bạn nam trong lớp luôn giữ vững phong độ, gặt hái nhiều điểm 10 và luôn là một phần tuyệt vời của tập thể lớp.",
+        },
+        {
+          name: "Lại Ngọc Mai",
+          message: "Chúc các bạn nam luôn vững vàng trước thử thách, sống hết mình và không ngừng tỏa sáng nhé!",
+        },
+        {
+          name: "Nguyễn Thị Nhài",
+          message: "19/11 chúc các bạn nam luôn bản lĩnh, tự tin, nhiều niềm vui và luôn là những mảnh ghép tuyệt vời của lớp nhé!😁",
+        },
+        {
+          name: "Đặng Thị Kim Oanh",
+          message: "Chúc các chàng trai của K51A CNTT luôn tự tin tỏa sáng, theo đuổi đam mê và chinh phục mọi ước mơ!",
+        },
+        {
+          name: "Đặng Thị Thúy Quỳnh",
+          message: "Chúc các chàng trai luôn giữ được nhiệt huyết, sự chân thành và nụ cười rạng rỡ!",
+        },
+        {
+          name: "Nguyễn Như Quỳnh",
+          message: "19/11 chúc các con vợ trẻ, KHOẺ, mã đáo thành công nhé!",
+        },
+        {
+          name: "Nguyễn Kiều Thanh",
+          message: "Chúc các bạn nam K51A CNTT có ngày 19/11 thật vui vẻ nhé , hi vọng sau này các bạn sẽ thật thành công và hạnh phúc✌🏻.",
+        },
+        {
+          name: "Nguyễn Ngọc Anh Thơ",
+          message: "Chúc các chàng trai K51A CNTT 19/11 vui vẻ, luôn mạnh khỏe, học tập tốt và sớm đạt được những mục tiêu của mình nhé! 😁",
+        },
+        {
+          name: "Vũ Ngọc Anh Thư",
+          message: "Chúc các chàng trai luôn tràn đầy năng lượng, gặp nhiều may mắn và gặt hái những thành công rực rỡ!",
+        },
+        {
+          name: "Nguyễn Trần Thủy Tiên",
+          message: "Cảm ơn các chàng trai đã là một phần thanh xuân thật đẹp của tập thể lớp K51A CNTT!",
+        },
+        {
+          name: "Vũ Mai Trang",
+          message: "Chúc một nửa thế giới của lớp ngày 19/11 vui vẻ, nhận thật nhiều quà, ăn ngon, ngủ kỹ và không \"nợ môn\".",
+        },
+        {
+          name: "Hoàng Thảo Vân",
+          message: "Chúc đàng trai lớp K51A CNTT luôn đẹp zai phong độ, thi cử thuận lợi và sớm trở thành những IT-er thành công, giàu có nhé!",
+        },
+      ];
+
+      // ============================================================
+      const $ = (id) => document.getElementById(id);
+      document.body.classList.add("locked");
+      function show(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        $(id).classList.add("active");
+        document.body.classList.toggle(
+          "locked",
+          id === "login" || id === "loading",
+        );
+        window.scrollTo(0, 0);
+      }
+      $("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const code = $("msv").value.trim().toUpperCase();
+        const student = students[code];
+        $("error").style.display = "none";
+        if (!student) {
+          $("error").style.display = "block";
+          return;
+        }
+        show("loading");
+        const messages = [
+          "Đang xác thực mã sinh viên",
+          "Đang kết nối cơ sở dữ liệu",
+          "Đang chuẩn bị hồ sơ cá nhân",
+        ];
+        let n = 0;
+        $("loadingText").textContent = messages[0];
+        const timer = setInterval(() => {
+          n++;
+          $("loadingText").textContent =
+            messages[Math.min(n, messages.length - 1)];
+        }, 750);
+        setTimeout(() => {
+          clearInterval(timer);
+          renderStudent(student);
+          show("celebrate");
+          requestAnimationFrame(() => launchConfetti());
+        }, 2500);
+      });
+      // Tạo nội dung an toàn từ văn bản do người quản trị nhập.
+      function escapeHTML(value) {
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[ch],
+        );
+      }
+      function renderStudent(student) {
+        $("personName").textContent =
+          `${student.name} — hôm nay là ngày của cậu!`;
+        $("photoGrid").innerHTML = `
+          <figure class="profile-photo">
+            <img src="${escapeHTML(student.photo)}" alt="Ảnh chân dung của ${escapeHTML(student.name)}" onerror="this.onerror=null;this.src='assets/photos/placeholder.svg'">
+            <figcaption>✦ OUR MAIN CHARACTER ✦</figcaption>
+          </figure>
+          <div class="profile-info">
+            <div class="heart-icon">💗</div>
+            <h3>${escapeHTML(student.name)}</h3>
+            <p>${escapeHTML(student.description)}</p>
+            <small>HAPPY MEN'S DAY · 19/11</small>
+          </div>`;
+        $("wishGrid").innerHTML = wishes
+          .map(
+            (wish) => `
+          <article class="wish-card">
+            <span class="quote-mark" aria-hidden="true">“</span>
+            <p class="wish-text">${escapeHTML(wish.message)}</p>
+            <div class="wish-author">— ${escapeHTML(wish.name)} 💌</div>
+          </article>`,
+          )
+          .join("");
+      }
+
+      function launchConfetti() {
+        const old = document.querySelector(".confetti-layer");
+        if (old) old.remove();
+        const layer = document.createElement("div");
+        layer.className = "confetti-layer";
+        layer.setAttribute("aria-hidden", "true");
+        const colors = [
+          "#ff6f91",
+          "#ffd166",
+          "#06d6a0",
+          "#6c9cff",
+          "#b892ff",
+          "#ff9f1c",
+          "#ffffff",
+        ];
+        for (let i = 0; i < 95; i++) {
+          const bit = document.createElement("i");
+          bit.className = "confetti";
+          bit.style.left = Math.random() * 100 + "%";
+          bit.style.background = colors[i % colors.length];
+          bit.style.setProperty("--dur", 3.4 + Math.random() * 3.8 + "s");
+          bit.style.setProperty("--drift", (Math.random() - 0.5) * 240 + "px");
+          bit.style.setProperty("--rot", Math.random() * 360 + "deg");
+          bit.style.animationDelay = Math.random() * 1.3 + "s";
+          if (i % 5 === 0) {
+            bit.style.width = "7px";
+            bit.style.height = "7px";
+            bit.style.borderRadius = "50%";
+          }
+          layer.appendChild(bit);
+        }
+        document.body.appendChild(layer);
+        setTimeout(() => layer.remove(), 9000);
+      }
+
+      function logout() {
+        const confetti = document.querySelector(".confetti-layer");
+        if (confetti) confetti.remove();
+        $("msv").value = "";
+        show("login");
+      }
+    </script>
+  </body>
+</html>

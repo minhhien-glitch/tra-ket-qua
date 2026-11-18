@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<rect width="800" height="1000" fill="#e9eef5"/><circle cx="650" cy="170" r="150" fill="#f3b4c4" opacity=".35"/>
+<path d="M0 760 Q220 620 420 780 T800 730 V1000 H0Z" fill="#f3b4c4" opacity=".35"/>
+<text x="400" y="455" text-anchor="middle" font-family="Arial,sans-serif" font-size="42" font-weight="bold" fill="#52627a">ẢNH CỦA CHÚNG MÌNH</text>
+<text x="400" y="515" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" fill="#52627a">Hãy thay bằng ảnh thật</text>
+</svg>
